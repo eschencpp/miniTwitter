@@ -3,12 +3,14 @@ package miniTwitter;
 import java.util.ArrayList;
 
 
-public class userName extends userComponent {
+public class userName extends userComponent implements Observable, Observer{
     
     private String UUID;
-    private  ArrayList followerList = new ArrayList();
+    private  ArrayList<Observer> followerList = new ArrayList();
     private  ArrayList following = new ArrayList();
     private  ArrayList newsFeed = new ArrayList();
+    private  ArrayList messages = new ArrayList();
+
 
     public userName(String username){
         this.UUID = username;
@@ -34,5 +36,29 @@ public class userName extends userComponent {
         System.out.println(this.UUID);
     }
 
+    public void tweet(String tweet){
+        messages.add(tweet);
+        notifyFollowers(tweet);
+    }
+
+    public ArrayList getTweets(){
+        return messages;
+    }
+
+    public void addfollower(Observer o){
+        followerList.add(o);
+    }
+    public void unfollow(Observer o){
+        followerList.remove(o);
+    }
+    public void notifyFollowers(String tweet){
+        for(Observer follower : followerList){
+            follower.update(tweet);
+        }   
+    }
+
+    public void update(String tweet){
+        newsFeed.add(tweet);
+    }
 
 }

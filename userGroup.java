@@ -40,7 +40,7 @@ public class userGroup extends userComponent{
     public void displayDetails(){
         System.out.println(getGroupName());
 
-        
+
         Iterator userIterator = userComponents.iterator();
         while(userIterator.hasNext()) {
             userComponent userInfo = (userComponent) userIterator.next();
