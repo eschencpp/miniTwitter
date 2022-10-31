@@ -125,7 +125,24 @@ public class adminCPanel extends JFrame {
 		JButton addGroup_button = new JButton("Add Group");
 		addGroup_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				root2.printNAryTree(root2);
+				DefaultMutableTreeNode selectedElement 
+   					=(DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent();
+				parent = selectedElement;
+
+				//Backend functionality
+				userGroup userGroup = new userGroup(groupTxtField.getText());
+				if(root2.findUser(root2,parent.toString()).userC instanceof userGroup ){
+					root2.findUser(root2,parent.toString()).children.add(new Tree(groupTxtField.getText(),userGroup));
+				}else{
+					System.out.println("Error can not add group to user.");
+					return;
+				}
+
+				//Update UI
+				child = new DefaultMutableTreeNode(groupTxtField.getText());
+				parent.add(child);
+				System.out.println(parent.toString());
+				tree.updateUI();
 			}
 		});
 		addGroup_button.setPreferredSize(new Dimension(200, 25));
