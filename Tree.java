@@ -42,10 +42,9 @@ public class Tree {
                 Tree node = queue.poll();
                 assert node != null;
                 if(node.uid.equals(id)){
-                    System.out.println("Returning node " + id);
+                    //System.out.println("Returning node " + id);
                     return node;
                 }
-                System.out.print(node.uid + " ");
                 for (Tree item : node.children) {
                     queue.offer(item);
                 }

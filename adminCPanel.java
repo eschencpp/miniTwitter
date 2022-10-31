@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -25,6 +26,8 @@ public class adminCPanel extends JFrame {
     private static adminCPanel acp = null;
 	DefaultMutableTreeNode root, parent, child, node;
 	JTree tree;
+	private int groupTotal = 1;
+	private int userTotal = 0;
     
 	userGroup rootG = new userGroup("root");
 	Tree root2 = new Tree("root", rootG);
@@ -107,6 +110,9 @@ public class adminCPanel extends JFrame {
 				parent.add(child);
 				System.out.println(parent.toString());
 				tree.updateUI();
+
+				//Increment user total
+				userTotal++;
 			}
 		});
 
@@ -143,6 +149,9 @@ public class adminCPanel extends JFrame {
 				parent.add(child);
 				System.out.println(parent.toString());
 				tree.updateUI();
+
+				//Increment Group total
+				groupTotal++;
 			}
 		});
 		addGroup_button.setPreferredSize(new Dimension(200, 25));
@@ -159,16 +168,49 @@ public class adminCPanel extends JFrame {
 		
 		JPanel total_Panel = new JPanel();
 		panel.add(total_Panel);
-		total_Panel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
+		total_Panel.setLayout(new GridLayout(2, 2, 0, 0));
 		
+		//Setup Panels
+		JPanel userTotalPanel = new JPanel();
+		total_Panel.add(userTotalPanel);
+		JPanel groupTotalBtnPanel = new JPanel();
+		total_Panel.add(groupTotalBtnPanel);
+		JPanel userLabelPanel = new JPanel();
+		total_Panel.add(userLabelPanel);
+		JPanel groupTotalLabelPanel = new JPanel();
+		total_Panel.add(groupTotalLabelPanel);
+		
+		//Set labels
+		JLabel lblNewLabel = new JLabel("Total Users: "+ userTotal);
+		JLabel lblNewLabel_1 = new JLabel("Total Groups: "+ groupTotal);
+		userLabelPanel.add(lblNewLabel);
+		groupTotalLabelPanel.add(lblNewLabel_1);
+
+		//Button to update user totals
 		JButton userTotal_button = new JButton("Show User Total");
 		userTotal_button.setPreferredSize(new Dimension(200, 25));
-		total_Panel.add(userTotal_button);
-		
+		userTotal_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lblNewLabel.setText("Total Users: "+ userTotal);
+				lblNewLabel.updateUI();
+			}
+		});
+		userTotalPanel.add(userTotal_button);
+
+		//Button to update amount of groups
 		JButton groupTotal_button = new JButton("Show Group Total");
 		groupTotal_button.setPreferredSize(new Dimension(200, 25));
-		total_Panel.add(groupTotal_button);
+		groupTotal_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lblNewLabel_1.setText("Total Groups: "+ groupTotal);
+				lblNewLabel_1.updateUI();
+			}
+		});
+		groupTotalBtnPanel.add(groupTotal_button);
 		
+
+
+		//Message Panel
 		JPanel message_Panel = new JPanel();
 		panel.add(message_Panel);
 		message_Panel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
@@ -182,8 +224,6 @@ public class adminCPanel extends JFrame {
 		posTotal_button.setPreferredSize(new Dimension(200, 25));
 		message_Panel.add(posTotal_button);
 	
-		
-
         setVisible(true);
 	}    
 
