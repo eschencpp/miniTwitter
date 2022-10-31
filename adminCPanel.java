@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.JButton;
 import javax.swing.JTree;
 import java.awt.FlowLayout;
@@ -13,12 +15,19 @@ import javax.swing.BoxLayout;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 /**
  * adminCPanel
  */
 public class adminCPanel extends JFrame {
 
     private static adminCPanel acp = null;
+	DefaultMutableTreeNode root, parent, child, node;
+	JTree tree;
+    
+	userGroup rootG = new userGroup("root");
+	TreeNode<userComponent> root2 = new TreeNode<userComponent>(rootG);
 
     private adminCPanel(){ 
         makeGui();
@@ -36,8 +45,9 @@ public class adminCPanel extends JFrame {
     public void makeGui() {
 
         JPanel contentPane;
-        JTextField textField;
-        JTextField textField_1;
+        JTextField userTxtField;
+        JTextField groupTxtField;
+        this.setTitle("Admin Panel");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 600);
 		contentPane = new JPanel();
@@ -49,75 +59,102 @@ public class adminCPanel extends JFrame {
 		JSplitPane splitPane = new JSplitPane();
 		contentPane.add(splitPane);
 		
+        JPanel tree_Panel = new JPanel();
+		splitPane.setLeftComponent(tree_Panel);
+
 		JPanel panel = new JPanel();
 		splitPane.setRightComponent(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
-		JPanel panel_1 = new JPanel();
-		panel.add(panel_1);
-		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
+        //Jtree
+		root = new DefaultMutableTreeNode("root");
+		tree = new JTree(root);
+		//Add tree to panel
+		tree_Panel.add(tree);
 		
-		textField = new JTextField();
-		panel_1.add(textField);
-		textField.setColumns(10);
+
+		//Panel to add user
+        JPanel user_Panel = new JPanel();
+		panel.add(user_Panel);
+		user_Panel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
+
+		//Text field to add user
+		userTxtField = new JTextField();
+		user_Panel.add(userTxtField);
+		userTxtField.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Add User");
-		btnNewButton.setPreferredSize(new Dimension(200, 25));
-		panel_1.add(btnNewButton);
+		//Button for adding user
+		JButton addUser_button = new JButton("Add User");
+		addUser_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Element that cursor selected in JTree
+				DefaultMutableTreeNode selectedElement 
+   					=(DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent();
+				parent = selectedElement;
+				//userName username = new userName(userTxtField.getText());
+				child = new DefaultMutableTreeNode(userTxtField.getText());
+				parent.add(child);
+				tree.updateUI();
+
+				
+			}
+		});
+
+        addUser_button.setPreferredSize(new Dimension(200, 25));
+		user_Panel.add(addUser_button);
 		
-		JPanel panel_2 = new JPanel();
-		panel.add(panel_2);
-		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
+		//Panel for adding group
+		JPanel group_Panel = new JPanel();
+		panel.add(group_Panel);
+		group_Panel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
 		
-		textField_1 = new JTextField();
-		panel_2.add(textField_1);
-		textField_1.setColumns(10);
+		groupTxtField = new JTextField();
+		group_Panel.add(groupTxtField);
+		groupTxtField.setColumns(10);
 		
-		JButton btnNewButton_1 = new JButton("Add Group");
-		btnNewButton_1.setPreferredSize(new Dimension(200, 25));
-		panel_2.add(btnNewButton_1);
+		JButton addGroup_button = new JButton("Add Group");
+		addGroup_button.setPreferredSize(new Dimension(200, 25));
+		group_Panel.add(addGroup_button);
 		
-		JPanel panel_3 = new JPanel();
-		panel.add(panel_3);
-		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
+		JPanel userView_Panel = new JPanel();
+		panel.add(userView_Panel);
+		userView_Panel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
 		
-		JButton btnNewButton_2 = new JButton("Open User View");
-		btnNewButton_2.setPreferredSize(new Dimension(300, 25));
-		panel_3.add(btnNewButton_2);
+		JButton openUserView_button = new JButton("Open User View");
+		openUserView_button.setPreferredSize(new Dimension(300, 25));
+		userView_Panel.add(openUserView_button);
 	
 		
-		JPanel panel_4 = new JPanel();
-		panel.add(panel_4);
-		panel_4.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
+		JPanel total_Panel = new JPanel();
+		panel.add(total_Panel);
+		total_Panel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
 		
-		JButton btnNewButton_3 = new JButton("Show User Total");
-		btnNewButton_3.setPreferredSize(new Dimension(200, 25));
-		panel_4.add(btnNewButton_3);
+		JButton userTotal_button = new JButton("Show User Total");
+		userTotal_button.setPreferredSize(new Dimension(200, 25));
+		total_Panel.add(userTotal_button);
 		
-		JButton btnNewButton_4 = new JButton("Show Group Total");
-		btnNewButton_4.setPreferredSize(new Dimension(200, 25));
-		panel_4.add(btnNewButton_4);
+		JButton groupTotal_button = new JButton("Show Group Total");
+		groupTotal_button.setPreferredSize(new Dimension(200, 25));
+		total_Panel.add(groupTotal_button);
 		
-		JPanel panel_5 = new JPanel();
-		panel.add(panel_5);
-		panel_5.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
+		JPanel message_Panel = new JPanel();
+		panel.add(message_Panel);
+		message_Panel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
 		
-		JButton btnNewButton_5 = new JButton("Show Messages Total");
-		btnNewButton_5.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton_5.setPreferredSize(new Dimension(200, 25));
-		panel_5.add(btnNewButton_5);
+		JButton messageTotal_button = new JButton("Show Messages Total");
+		messageTotal_button.setFont(new Font("Tahoma", Font.BOLD, 11));
+		messageTotal_button.setPreferredSize(new Dimension(200, 25));
+		message_Panel.add(messageTotal_button);
 		
-		JButton btnNewButton_6 = new JButton("Show Positive Percentage");
-		btnNewButton_6.setPreferredSize(new Dimension(200, 25));
-		panel_5.add(btnNewButton_6);
+		JButton posTotal_button = new JButton("Show Positive Percentage");
+		posTotal_button.setPreferredSize(new Dimension(200, 25));
+		message_Panel.add(posTotal_button);
+	
 		
-		JPanel panel_6 = new JPanel();
-		splitPane.setLeftComponent(panel_6);
-		
-		JTree tree = new JTree();
-		panel_6.add(tree);
 
         setVisible(true);
 	}    
+
+
 
 }

@@ -1,5 +1,9 @@
 package miniTwitter;
 import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.*;
 
 public class driver {
     public static void main(String[] args) {
@@ -7,15 +11,9 @@ public class driver {
         userName p1 = new userName("Eric");
         userName p2 = new userName("Bill");
         
-        g1.add(p1);
-        g1.add(p2);
-        
-        p1.addfollower(p2);
-        p1.tweet("Hello World");
-        System.out.println(p2.getNewsFeed().toString());
 
-        //adminCPanel acm = adminCPanel.getInstance();
-        //g3.displayDetails();
+        adminCPanel acm = adminCPanel.getInstance();
         
+        System.out.println("Clicked");
     }
 }
