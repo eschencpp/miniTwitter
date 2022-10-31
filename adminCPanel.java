@@ -27,7 +27,8 @@ public class adminCPanel extends JFrame {
 	JTree tree;
     
 	userGroup rootG = new userGroup("root");
-	TreeNode<userComponent> root2 = new TreeNode<userComponent>(rootG);
+	Tree root2 = new Tree("root", rootG);
+	
 
     private adminCPanel(){ 
         makeGui();
@@ -91,12 +92,21 @@ public class adminCPanel extends JFrame {
 				DefaultMutableTreeNode selectedElement 
    					=(DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent();
 				parent = selectedElement;
-				//userName username = new userName(userTxtField.getText());
+
+				//Backend functionality
+				userName username = new userName(userTxtField.getText());
+				if(root2.findUser(root2,parent.toString()).userC instanceof userGroup ){
+					root2.findUser(root2,parent.toString()).children.add(new Tree(userTxtField.getText(),username));
+				}else{
+					System.out.println("Error can not add user to user.");
+					return;
+				}
+
+				//Update UI
 				child = new DefaultMutableTreeNode(userTxtField.getText());
 				parent.add(child);
+				System.out.println(parent.toString());
 				tree.updateUI();
-
-				
 			}
 		});
 
@@ -113,6 +123,11 @@ public class adminCPanel extends JFrame {
 		groupTxtField.setColumns(10);
 		
 		JButton addGroup_button = new JButton("Add Group");
+		addGroup_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				root2.printNAryTree(root2);
+			}
+		});
 		addGroup_button.setPreferredSize(new Dimension(200, 25));
 		group_Panel.add(addGroup_button);
 		
