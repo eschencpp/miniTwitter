@@ -28,7 +28,9 @@ public class userPanel extends JFrame{
     private JPanel contentPane;
 	private JTextField userTxtField;
 	private JTextField message_box;
-
+    String week[]= { "Monday","Tuesday","Wednesday",
+                "Thursday","Friday","Saturday","Sunday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday"};
+                
     private userName user;
 
     public userPanel(userName u){
@@ -37,17 +39,28 @@ public class userPanel extends JFrame{
     }
 
     private void makeGui(){
+        this.setTitle("User Panel: " + user.getUserName());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		String week[]= { "Monday","Tuesday","Wednesday",
-                "Thursday","Friday","Saturday","Sunday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday"};
 		setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		
-		JPanel follow_panel = new JPanel();
+		followUser();
+		
+		followerList();
+		
+		tweetPanel();
+		
+		newsFeed();
+
+        setVisible(true);
+    }
+
+    private void followUser(){
+        JPanel follow_panel = new JPanel();
 		contentPane.add(follow_panel);
 		follow_panel.setLayout(new BoxLayout(follow_panel, BoxLayout.X_AXIS));
 		follow_panel.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));
@@ -66,13 +79,15 @@ public class userPanel extends JFrame{
 		JButton followButton = new JButton("Follow User");
 		followButton.setPreferredSize(new Dimension(100, 20));
 		followBtn_panel.add(followButton);
-		
-		JPanel follower_panel;
+    }
+
+    private void followerList(){
+        JPanel follower_panel;
 		follower_panel = new JPanel();
 		contentPane.add(follower_panel);
 		follower_panel.setLayout(new BoxLayout(follower_panel, BoxLayout.Y_AXIS));
-		
-		JPanel ftitle_panel;
+
+        JPanel ftitle_panel;
 		ftitle_panel = new JPanel();
 		ftitle_panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 		follower_panel.add(ftitle_panel);
@@ -95,8 +110,11 @@ public class userPanel extends JFrame{
 		scrollPane.setViewportView(followingList);
 		followingList.setFont(new Font("Arial", Font.PLAIN, 12));
 		followingList.setListData(week);
-		
-		JPanel tweet_panel = new JPanel();
+
+    }
+
+    private void tweetPanel(){
+        JPanel tweet_panel = new JPanel();
 		contentPane.add(tweet_panel);
 		tweet_panel.setLayout(new BoxLayout(tweet_panel, BoxLayout.X_AXIS));
 		tweet_panel.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));
@@ -115,8 +133,10 @@ public class userPanel extends JFrame{
 		JButton tweetBtn = new JButton("Tweet");
 		tweetBtn.setPreferredSize(new Dimension(100, 20));
 		tweetBtn_panel.add(tweetBtn);
-		
-		JPanel newsFeed_panel = new JPanel();
+    }
+
+    private void newsFeed(){
+        JPanel newsFeed_panel = new JPanel();
 		contentPane.add(newsFeed_panel);
 		newsFeed_panel.setLayout(new BoxLayout(newsFeed_panel, BoxLayout.Y_AXIS));
 		
@@ -137,7 +157,7 @@ public class userPanel extends JFrame{
 		nfList_panel.add(scrollPane_1);
 		
 		JList nf_list = new JList();
-		scrollPane_1.setColumnHeaderView(nf_list);
+		scrollPane_1.setViewportView(nf_list);
 		nf_list.setFont(new Font("Arial", Font.PLAIN, 12));
 		nf_list.setListData(week);
         setVisible(true);
