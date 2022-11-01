@@ -24,61 +24,73 @@ import java.awt.event.ActionEvent;
 public class adminCPanel extends JFrame {
 
     private static adminCPanel acp = null;
-	DefaultMutableTreeNode root, parent, child, node;
+	DefaultMutableTreeNode jRoot, parent, child, node;
 	JTree tree;
 	private int groupTotal = 1;
 	private int userTotal = 0;
+	private JPanel panel;
     
-	userGroup rootG = new userGroup("root");
-	Tree root2 = new Tree("root", rootG);
+	userGroup rootGroup = new userGroup("root");
+	Tree root = new Tree("root", rootGroup);
 	
-
     private adminCPanel(){ 
         makeGui();
     }
     
-    public static adminCPanel getInstance()
-    {
-        if (acp == null)
-        acp = new adminCPanel();
-  
+    public static adminCPanel getInstance(){
+        if (acp == null){
+        	acp = new adminCPanel();
+		}
         return acp;
     }
 
 
     public void makeGui() {
-
+		//Create frame for content
         JPanel contentPane;
-        JTextField userTxtField;
-        JTextField groupTxtField;
         this.setTitle("Admin Panel");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(1, 0, 0, 0));
 		
+		//Create split pane
 		JSplitPane splitPane = new JSplitPane();
 		contentPane.add(splitPane);
 		
+		//Set left panel
         JPanel tree_Panel = new JPanel();
 		splitPane.setLeftComponent(tree_Panel);
 
-		JPanel panel = new JPanel();
+		//Set right panel
+		panel = new JPanel();
 		splitPane.setRightComponent(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
-        //Jtree
-		root = new DefaultMutableTreeNode("root");
-		tree = new JTree(root);
-		//Add tree to panel
+        //Add Jtree to left panel
+		jRoot = new DefaultMutableTreeNode("root");
+		tree = new JTree(jRoot);
 		tree_Panel.add(tree);
 		
-
 		//Panel to add user
-        JPanel user_Panel = new JPanel();
+		addUserComponents();
+		//Open user control panel
+		userControlPanel();
+		//Total users/group panel
+		userComponentCount();
+		//Message Panel
+		messageCount();
+
+        setVisible(true);
+	}    
+
+	//Allow panel to add users and groups
+	private void addUserComponents(){
+		JTextField userTxtField;
+        JTextField groupTxtField;
+		JPanel user_Panel = new JPanel();
 		panel.add(user_Panel);
 		user_Panel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
 
@@ -98,10 +110,10 @@ public class adminCPanel extends JFrame {
 
 				//Backend functionality
 				userName username = new userName(userTxtField.getText());
-				if(root2.findUser(root2,parent.toString()).userC instanceof userGroup ){
-					root2.findUser(root2,parent.toString()).children.add(new Tree(userTxtField.getText(),username));
+				if(root.findUser(root,parent.toString()).userC instanceof userGroup ){
+					root.findUser(root,parent.toString()).children.add(new Tree(userTxtField.getText(),username));
 				}else{
-					System.out.println("Error can not add user to user.");
+					System.out.println("Error can not add user to another user.");
 					return;
 				}
 
@@ -137,10 +149,10 @@ public class adminCPanel extends JFrame {
 
 				//Backend functionality
 				userGroup userGroup = new userGroup(groupTxtField.getText());
-				if(root2.findUser(root2,parent.toString()).userC instanceof userGroup ){
-					root2.findUser(root2,parent.toString()).children.add(new Tree(groupTxtField.getText(),userGroup));
+				if(root.findUser(root,parent.toString()).userC instanceof userGroup ){
+					root.findUser(root,parent.toString()).children.add(new Tree(groupTxtField.getText(),userGroup));
 				}else{
-					System.out.println("Error can not add group to user.");
+					System.out.println("Error can not add group to a user.");
 					return;
 				}
 
@@ -156,7 +168,10 @@ public class adminCPanel extends JFrame {
 		});
 		addGroup_button.setPreferredSize(new Dimension(200, 25));
 		group_Panel.add(addGroup_button);
-		
+	}
+
+	//Open control panel for specific user
+	private void userControlPanel(){
 		JPanel userView_Panel = new JPanel();
 		panel.add(userView_Panel);
 		userView_Panel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
@@ -164,8 +179,10 @@ public class adminCPanel extends JFrame {
 		JButton openUserView_button = new JButton("Open User View");
 		openUserView_button.setPreferredSize(new Dimension(300, 25));
 		userView_Panel.add(openUserView_button);
-	
-		
+	}
+
+	//Display total amout of users/groups
+	private void userComponentCount(){
 		JPanel total_Panel = new JPanel();
 		panel.add(total_Panel);
 		total_Panel.setLayout(new GridLayout(2, 2, 0, 0));
@@ -207,10 +224,10 @@ public class adminCPanel extends JFrame {
 			}
 		});
 		groupTotalBtnPanel.add(groupTotal_button);
-		
+	}
 
-
-		//Message Panel
+	//Display total message count and positive message ratio
+	private void messageCount(){
 		JPanel message_Panel = new JPanel();
 		panel.add(message_Panel);
 		message_Panel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
@@ -223,10 +240,6 @@ public class adminCPanel extends JFrame {
 		JButton posTotal_button = new JButton("Show Positive Percentage");
 		posTotal_button.setPreferredSize(new Dimension(200, 25));
 		message_Panel.add(posTotal_button);
-	
-        setVisible(true);
-	}    
-
-
+	}
 
 }
