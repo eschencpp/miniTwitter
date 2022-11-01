@@ -53,4 +53,12 @@ public class Tree {
         }
         return null;
     }
+
+    public userName getUser(){
+        if(userC instanceof userName){
+            System.out.println("is a username");
+            return (userName)userC;
+        }
+        return null;
+    }
 }

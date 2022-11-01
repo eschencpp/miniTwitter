@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import javax.swing.JButton;
 import javax.swing.JTree;
 import java.awt.FlowLayout;
@@ -72,6 +73,9 @@ public class adminCPanel extends JFrame {
         //Add Jtree to left panel
 		jRoot = new DefaultMutableTreeNode("root");
 		tree = new JTree(jRoot);
+		//Set default selection to be root in Jtree
+		DefaultMutableTreeNode firstLeaf = ((DefaultMutableTreeNode)tree.getModel().getRoot()).getFirstLeaf();
+		tree.setSelectionPath(new TreePath(firstLeaf.getPath()));
 		tree_Panel.add(tree);
 		
 		//Panel to add user
@@ -178,6 +182,15 @@ public class adminCPanel extends JFrame {
 		
 		JButton openUserView_button = new JButton("Open User View");
 		openUserView_button.setPreferredSize(new Dimension(300, 25));
+		openUserView_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultMutableTreeNode selectedElement 
+   				=(DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent();
+				Tree selectedNode = root.findUser(root,selectedElement.toString());
+				userPanel userPanel = new userPanel(selectedNode.getUser());
+				System.out.println(selectedNode.getUser().getUserName());
+			}
+		});
 		userView_Panel.add(openUserView_button);
 	}
 
