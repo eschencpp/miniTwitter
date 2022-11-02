@@ -37,6 +37,7 @@ public class userPanel extends JFrame{
 	private Tree root;
 
 	JList following_JList;
+	JList newsFeed_Jlist;
 
     public userPanel(userName u, Tree tree){
         user = u;
@@ -129,7 +130,7 @@ public class userPanel extends JFrame{
 		following_JList = new JList();
 		scrollPane.setViewportView(following_JList);
 		following_JList.setFont(new Font("Arial", Font.PLAIN, 12));
-		following_JList.setListData(getfollowingList().toArray());
+		following_JList.setListData(getUser().getFollowingNames());
     }
 
     private void tweetPanel(){
@@ -142,7 +143,7 @@ public class userPanel extends JFrame{
 		tweet_panel.add(msgBox_panel);
 		
 		message_box = new JTextField();
-		message_box.setHorizontalAlignment(SwingConstants.CENTER);
+		message_box.setHorizontalAlignment(SwingConstants.LEFT);
 		msgBox_panel.add(message_box);
 		message_box.setColumns(10);
 		
@@ -151,6 +152,13 @@ public class userPanel extends JFrame{
 		
 		JButton tweetBtn = new JButton("Tweet");
 		tweetBtn.setPreferredSize(new Dimension(100, 20));
+		tweetBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getUser().tweet(message_box.getText());
+				newsFeed_Jlist.setListData(getUser().getNewsFeed().toArray());
+				newsFeed_Jlist.updateUI();
+			}
+		});
 		tweetBtn_panel.add(tweetBtn);
     }
 
@@ -175,10 +183,9 @@ public class userPanel extends JFrame{
 		JScrollPane scrollPane_1 = new JScrollPane();
 		nfList_panel.add(scrollPane_1);
 		
-		JList nf_list = new JList();
-		scrollPane_1.setViewportView(nf_list);
-		nf_list.setFont(new Font("Arial", Font.PLAIN, 12));
-		nf_list.setListData(week);
-        setVisible(true);
+		newsFeed_Jlist = new JList();
+		scrollPane_1.setViewportView(newsFeed_Jlist);
+		newsFeed_Jlist.setFont(new Font("Arial", Font.PLAIN, 12));
+		newsFeed_Jlist.setListData(getUser().getNewsFeed().toArray());
     }
 }

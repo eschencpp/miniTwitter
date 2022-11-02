@@ -51,7 +51,7 @@ public class userName extends userComponent implements Observable, Observer{
     }
 
     public void tweet(String tweet){
-        messages.add(tweet);
+        this.newsFeed.add("From "+ this.UUID + ":    " + tweet);
         notifyFollowers(tweet);
     }
 

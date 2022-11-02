@@ -59,7 +59,6 @@ public class Tree {
                     queue.offer(item);
                 }
             }
-            System.out.println();
         }
         return null;
     }
