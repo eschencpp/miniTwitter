@@ -114,9 +114,14 @@ public class adminCPanel extends JFrame {
 
 				//Backend functionality
 				userName username = new userName(userTxtField.getText());
-				if(root.findUser(root,parent.toString()).userC instanceof userGroup ){
+				//Add user if selected directory is a group and the user does not exist already
+				if(root.findUser(root,parent.toString()).userC instanceof userGroup && (root.findUser(root, userTxtField.getText()) == null) ){
 					root.findUser(root,parent.toString()).children.add(new Tree(userTxtField.getText(),username));
 				}else{
+					if(root.findUser(root, userTxtField.getText()) != null){
+						System.out.println("User already exists. Please choose another username");
+						return;
+					}
 					System.out.println("Error can not add user to another user.");
 					return;
 				}
