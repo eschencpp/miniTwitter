@@ -14,6 +14,11 @@ public class Tree {
         userC = component;
     }
 
+    /**
+    * Prints the tree from starting root
+    *
+    * @param root  the starting node to search from
+    */
     public void printNAryTree(Tree root){
         if(root == null) return;
         Queue<Tree> queue = new LinkedList<>();
@@ -32,6 +37,12 @@ public class Tree {
         }
     }
 
+    /**
+    * Searches the tree until user is found
+    *
+    * @param root  the starting node to search from
+    * @param id    the key (username) that is being searched for
+    */
     public Tree findUser(Tree root, String id){
         if(root == null) return null;
         Queue<Tree> queue = new LinkedList<>();
@@ -42,7 +53,6 @@ public class Tree {
                 Tree node = queue.poll();
                 assert node != null;
                 if(node.uid.equals(id)){
-                    //System.out.println("Returning node " + id);
                     return node;
                 }
                 for (Tree item : node.children) {
@@ -54,9 +64,11 @@ public class Tree {
         return null;
     }
 
+    /**
+    * Return the data object userName
+    */
     public userName getUser(){
         if(userC instanceof userName){
-            System.out.println("is a username");
             return (userName)userC;
         }
         return null;

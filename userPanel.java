@@ -21,6 +21,8 @@ import java.awt.Font;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.awt.event.ActionEvent;
 
 public class userPanel extends JFrame{
@@ -29,14 +31,23 @@ public class userPanel extends JFrame{
 	private JTextField userTxtField;
 	private JTextField message_box;
     String week[]= { "Monday","Tuesday","Wednesday",
-                "Thursday","Friday","Saturday","Sunday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday","Tuesday"};
+                "Thursday","Friday","Saturday","Sunday","Tuesday","Tuesday",};
                 
     private userName user;
+	private Tree root;
 
-    public userPanel(userName u){
+	JList following_JList;
+
+    public userPanel(userName u, Tree tree){
         user = u;
+		root = tree;
         makeGui();
     }
+
+	//Return the user object of this class
+	private userName getUser(){
+		return user;
+	}
 
     private void makeGui(){
         this.setTitle("User Panel: " + user.getUserName());
@@ -77,6 +88,16 @@ public class userPanel extends JFrame{
 		follow_panel.add(followBtn_panel);
 		
 		JButton followButton = new JButton("Follow User");
+		followButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				userName u = root.findUser(root, userTxtField.getText()).getUser(); //The observable 
+				u.addfollower(getUser());
+
+				//Set the following list data and update the UI 
+				following_JList.setListData(getUser().getFollowingNames());
+				following_JList.updateUI();
+			}
+		});
 		followButton.setPreferredSize(new Dimension(100, 20));
 		followBtn_panel.add(followButton);
     }
@@ -93,24 +114,22 @@ public class userPanel extends JFrame{
 		follower_panel.add(ftitle_panel);
 		ftitle_panel.setLayout(new BoxLayout(ftitle_panel, BoxLayout.X_AXIS));
 		
-		JLabel followersLabel = new JLabel("Following");
-		followersLabel.setFont(new Font("Arial", Font.BOLD, 13));
-		ftitle_panel.add(followersLabel);
+		JLabel followingLabel = new JLabel("Following");
+		followingLabel.setFont(new Font("Arial", Font.BOLD, 13));
+		ftitle_panel.add(followingLabel);
 		
 		JPanel flist_panel;
 		flist_panel = new JPanel();
 		follower_panel.add(flist_panel);
 		flist_panel.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JList followingList;
-		
+		//Add JList to scrollpane
 		JScrollPane scrollPane = new JScrollPane();
 		flist_panel.add(scrollPane);
-		followingList = new JList();
-		scrollPane.setViewportView(followingList);
-		followingList.setFont(new Font("Arial", Font.PLAIN, 12));
-		followingList.setListData(week);
-
+		following_JList = new JList();
+		scrollPane.setViewportView(following_JList);
+		following_JList.setFont(new Font("Arial", Font.PLAIN, 12));
+		following_JList.setListData(getfollowingList().toArray());
     }
 
     private void tweetPanel(){

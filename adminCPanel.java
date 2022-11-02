@@ -124,7 +124,7 @@ public class adminCPanel extends JFrame {
 				//Update UI
 				child = new DefaultMutableTreeNode(userTxtField.getText());
 				parent.add(child);
-				System.out.println(parent.toString());
+				//System.out.println(parent.toString());
 				tree.updateUI();
 
 				//Increment user total
@@ -163,7 +163,7 @@ public class adminCPanel extends JFrame {
 				//Update UI
 				child = new DefaultMutableTreeNode(groupTxtField.getText());
 				parent.add(child);
-				System.out.println(parent.toString());
+				//System.out.println(parent.toString());
 				tree.updateUI();
 
 				//Increment Group total
@@ -187,8 +187,8 @@ public class adminCPanel extends JFrame {
 				DefaultMutableTreeNode selectedElement 
    				=(DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent();
 				Tree selectedNode = root.findUser(root,selectedElement.toString());
-				userPanel userPanel = new userPanel(selectedNode.getUser());
-				System.out.println(selectedNode.getUser().getUserName());
+				userPanel userPanel = new userPanel(selectedNode.getUser(), root);
+				//System.out.println(selectedNode.getUser().getUserName());
 			}
 		});
 		userView_Panel.add(openUserView_button);
