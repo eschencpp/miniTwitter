@@ -10,7 +10,7 @@ public class userName extends userComponent implements Observable, Observer{
     private  ArrayList<Observer> followerList = new ArrayList();
     private  ArrayList<userName> following = new ArrayList();
     private  ArrayList newsFeed = new ArrayList();
-    private  ArrayList messages = new ArrayList();
+    private  ArrayList<String> messages = new ArrayList<String>();
 
 
     public userName(String username){
@@ -58,7 +58,20 @@ public class userName extends userComponent implements Observable, Observer{
 
     //Returns the tweets that the user has made
     public ArrayList<String> getTweets(){
-        return messages;
+        return this.messages;
+    }
+
+    public int getPositive(){
+        int pMsg = 0;
+        String[] positiveWords = {"good","great","nice"};
+        for(int i = 0; i < this.messages.size(); i++){
+            for(int k = 0; k < positiveWords.length; k++){
+                if(this.messages.get(i).contains(positiveWords[k])){
+                    pMsg++;
+                }
+            }
+        }
+        return pMsg;
     }
 
 

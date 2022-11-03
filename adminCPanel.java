@@ -249,6 +249,7 @@ public class adminCPanel extends JFrame {
 
 		JPanel message_Panel = new JPanel();
 		JLabel msgTotal_label = new JLabel("Total Message: 0");
+		JLabel posPerc_label = new JLabel("Positive ratio: ");
 		panel.add(message_Panel);
 		message_Panel.setLayout(new GridLayout(0, 2, 0, 0));
 		
@@ -258,7 +259,7 @@ public class adminCPanel extends JFrame {
 		JButton messageTotal_button = new JButton("Show Messages Total");
 		messageTotal_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int msgCount = root.countMsg(root);
+				int msgCount = root.countMsg(root)[0];
 				msgTotal_label.setText("Total Messages: "+ msgCount);
 				msgTotal_label.updateUI();
 			}
@@ -272,6 +273,14 @@ public class adminCPanel extends JFrame {
 		
 		JButton posPerc_button = new JButton("Show Positive Percentage");
 		posPercBtn_panel.add(posPerc_button);
+		posPerc_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				float ratio = (float)(root.countMsg(root)[1])/root.countMsg(root)[0];
+				ratio = (float)Math.round(ratio *10000)/100;
+				posPerc_label.setText("Positive ratio: "+Float.toString(ratio)+"%");
+				posPerc_label.updateUI();
+			}
+		});
 		posPerc_button.setPreferredSize(new Dimension(200, 25));
 		
 		JPanel totalMsgLbl_panel = new JPanel();
@@ -282,7 +291,7 @@ public class adminCPanel extends JFrame {
 		JPanel posPercLbl_panel = new JPanel();
 		message_Panel.add(posPercLbl_panel);
 		
-		JLabel posPerc_label = new JLabel("New label");
+	
 		posPercLbl_panel.add(posPerc_label);
 	}
 

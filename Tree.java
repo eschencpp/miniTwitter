@@ -39,12 +39,15 @@ public class Tree {
 
 
     /** 
-     * Count the total number of messages sent from all users
+     * Count the total number of messages sent from all users in index 0 and 
+     * the count of positive messages in index 1
      * @param root node to start traversal
      * @return the total number of messages from all users starting from root
     */
-    public int countMsg(Tree root){
+    public int[] countMsg(Tree root){
         int msgCount = 0;
+        int posMsg = 0;
+        int[] c = new int[2];
         Queue<Tree> queue = new LinkedList<>();
         queue.offer(root);
         while(!queue.isEmpty()) {
@@ -54,14 +57,16 @@ public class Tree {
                 assert node != null;
                 if(node.userC instanceof userName){
                     msgCount += node.getUser().getTweets().size();
+                    posMsg += node.getUser().getPositive();
                 }
                 for (Tree item : node.children) {
                     queue.offer(item);
                 }
             }
-            System.out.println();
         }
-        return msgCount;
+        c[0] = msgCount;
+        c[1] = posMsg;
+        return c;
     }
 
     /**
