@@ -114,9 +114,14 @@ public class adminCPanel extends JFrame {
 
 				//Backend functionality
 				userName username = new userName(userTxtField.getText());
-				if(root.findUser(root,parent.toString()).userC instanceof userGroup ){
+				//Add user if selected directory is a group and the user does not exist already
+				if(root.findUser(root,parent.toString()).userC instanceof userGroup && (root.findUser(root, userTxtField.getText()) == null) ){
 					root.findUser(root,parent.toString()).children.add(new Tree(userTxtField.getText(),username));
 				}else{
+					if(root.findUser(root, userTxtField.getText()) != null){
+						System.out.println("User already exists. Please choose another username");
+						return;
+					}
 					System.out.println("Error can not add user to another user.");
 					return;
 				}
@@ -124,7 +129,7 @@ public class adminCPanel extends JFrame {
 				//Update UI
 				child = new DefaultMutableTreeNode(userTxtField.getText());
 				parent.add(child);
-				System.out.println(parent.toString());
+				//System.out.println(parent.toString());
 				tree.updateUI();
 
 				//Increment user total
@@ -163,7 +168,7 @@ public class adminCPanel extends JFrame {
 				//Update UI
 				child = new DefaultMutableTreeNode(groupTxtField.getText());
 				parent.add(child);
-				System.out.println(parent.toString());
+				//System.out.println(parent.toString());
 				tree.updateUI();
 
 				//Increment Group total
@@ -187,8 +192,8 @@ public class adminCPanel extends JFrame {
 				DefaultMutableTreeNode selectedElement 
    				=(DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent();
 				Tree selectedNode = root.findUser(root,selectedElement.toString());
-				userPanel userPanel = new userPanel(selectedNode.getUser());
-				System.out.println(selectedNode.getUser().getUserName());
+				userPanel userPanel = new userPanel(selectedNode.getUser(), root);
+				//System.out.println(selectedNode.getUser().getUserName());
 			}
 		});
 		userView_Panel.add(openUserView_button);
@@ -241,18 +246,44 @@ public class adminCPanel extends JFrame {
 
 	//Display total message count and positive message ratio
 	private void messageCount(){
+
 		JPanel message_Panel = new JPanel();
+		JLabel msgTotal_label = new JLabel("Total Message: 0");
 		panel.add(message_Panel);
-		message_Panel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
+		message_Panel.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JPanel msgTotalbtn_panel = new JPanel();
+		message_Panel.add(msgTotalbtn_panel);
 		
 		JButton messageTotal_button = new JButton("Show Messages Total");
+		messageTotal_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int msgCount = root.countMsg(root);
+				msgTotal_label.setText("Total Messages: "+ msgCount);
+				msgTotal_label.updateUI();
+			}
+		});
+		msgTotalbtn_panel.add(messageTotal_button);
 		messageTotal_button.setFont(new Font("Tahoma", Font.BOLD, 11));
 		messageTotal_button.setPreferredSize(new Dimension(200, 25));
-		message_Panel.add(messageTotal_button);
 		
-		JButton posTotal_button = new JButton("Show Positive Percentage");
-		posTotal_button.setPreferredSize(new Dimension(200, 25));
-		message_Panel.add(posTotal_button);
+		JPanel posPercBtn_panel = new JPanel();
+		message_Panel.add(posPercBtn_panel);
+		
+		JButton posPerc_button = new JButton("Show Positive Percentage");
+		posPercBtn_panel.add(posPerc_button);
+		posPerc_button.setPreferredSize(new Dimension(200, 25));
+		
+		JPanel totalMsgLbl_panel = new JPanel();
+		message_Panel.add(totalMsgLbl_panel);
+		
+		totalMsgLbl_panel.add(msgTotal_label);
+		
+		JPanel posPercLbl_panel = new JPanel();
+		message_Panel.add(posPercLbl_panel);
+		
+		JLabel posPerc_label = new JLabel("New label");
+		posPercLbl_panel.add(posPerc_label);
 	}
 
 }
