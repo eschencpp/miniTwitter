@@ -52,13 +52,15 @@ public class userName extends userComponent implements Observable, Observer{
 
     public void tweet(String tweet){
         this.newsFeed.add("From "+ this.UUID + ":    " + tweet);
+        this.messages.add(tweet);
         notifyFollowers(tweet);
     }
 
     //Returns the tweets that the user has made
-    public ArrayList getTweets(){
+    public ArrayList<String> getTweets(){
         return messages;
     }
+
 
     public void addfollower(Observer o){
         followerList.add(o);

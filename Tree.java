@@ -37,6 +37,33 @@ public class Tree {
         }
     }
 
+
+    /** 
+     * Count the total number of messages sent from all users
+     * @param root node to start traversal
+     * @return the total number of messages from all users starting from root
+    */
+    public int countMsg(Tree root){
+        int msgCount = 0;
+        Queue<Tree> queue = new LinkedList<>();
+        queue.offer(root);
+        while(!queue.isEmpty()) {
+            int len = queue.size();
+            for(int i=0;i<len;i++) {
+                Tree node = queue.poll();
+                assert node != null;
+                if(node.userC instanceof userName){
+                    msgCount += node.getUser().getTweets().size();
+                }
+                for (Tree item : node.children) {
+                    queue.offer(item);
+                }
+            }
+            System.out.println();
+        }
+        return msgCount;
+    }
+
     /**
     * Searches the tree until user is found
     *
