@@ -35,18 +35,4 @@ public class userGroup extends userComponent{
         return userComponents.get(componentIndex);
     }
     
-    //Gets all children of node
-    @Override
-    public void displayDetails(){
-        System.out.println(getGroupName());
-
-
-        Iterator userIterator = userComponents.iterator();
-        while(userIterator.hasNext()) {
-            userComponent userInfo = (userComponent) userIterator.next();
-            userInfo.displayDetails();
-        }
-    }
-
-    
 }

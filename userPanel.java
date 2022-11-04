@@ -35,7 +35,7 @@ public class userPanel extends JFrame{
                 
     private userName user;
 	private Tree root;
-
+	private findUserCompVisitor findUserC = new findUserCompVisitor();
 	JList following_JList;
 	JList newsFeed_Jlist;
 
@@ -91,9 +91,10 @@ public class userPanel extends JFrame{
 		JButton followButton = new JButton("Follow User");
 		followButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				userName u = root.findUser(root, userTxtField.getText()).getUser(); //The observable 
-				u.addfollower(getUser());
-
+				userName u = (userName)root.accept(findUserC, new userName(userTxtField.getText())).getUserComponent(); //The observable 
+				if(u != null){
+					u.addfollower(getUser());
+				}
 				//Set the following list data and update the UI 
 				following_JList.setListData(getUser().getFollowingNames());
 				following_JList.updateUI();

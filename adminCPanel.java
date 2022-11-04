@@ -30,6 +30,7 @@ public class adminCPanel extends JFrame {
 	private int groupTotal = 1;
 	private int userTotal = 0;
 	private JPanel panel;
+	private findUserCompVisitor findUserC = new findUserCompVisitor();
     
 	userGroup rootGroup = new userGroup("root");
 	Tree root = new Tree("root", rootGroup);
@@ -110,26 +111,25 @@ public class adminCPanel extends JFrame {
 				//Element that cursor selected in JTree
 				DefaultMutableTreeNode selectedElement 
    					=(DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent();
-				parent = selectedElement;
-
+				userGroup tempGroup = new userGroup(selectedElement.toString()); //Local Group used to compare to Groups in tree
 				//Backend functionality
 				userName username = new userName(userTxtField.getText());
 				//Add user if selected directory is a group and the user does not exist already
-				if(root.findUser(root,parent.toString()).userC instanceof userGroup && (root.findUser(root, userTxtField.getText()) == null) ){
-					root.findUser(root,parent.toString()).children.add(new Tree(userTxtField.getText(),username));
+				if(root.accept(findUserC,tempGroup).getUserComponent() instanceof userGroup && (root.accept(findUserC, username) == null) ){
+					root.accept(findUserC,tempGroup).children.add(new Tree(userTxtField.getText(),username));
 				}else{
-					if(root.findUser(root, userTxtField.getText()) != null){
+					if(root.accept(findUserC, username) != null){
 						System.out.println("User already exists. Please choose another username");
 						return;
 					}
 					System.out.println("Error can not add user to another user.");
+					
 					return;
 				}
 
 				//Update UI
 				child = new DefaultMutableTreeNode(userTxtField.getText());
-				parent.add(child);
-				//System.out.println(parent.toString());
+				selectedElement.add(child);
 				tree.updateUI();
 
 				//Increment user total
@@ -154,12 +154,12 @@ public class adminCPanel extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				DefaultMutableTreeNode selectedElement 
    					=(DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent();
-				parent = selectedElement;
+				userGroup tempGroup = new userGroup(selectedElement.toString()); //Local Group used to compare to Groups in tree
 
 				//Backend functionality
 				userGroup userGroup = new userGroup(groupTxtField.getText());
-				if(root.findUser(root,parent.toString()).userC instanceof userGroup ){
-					root.findUser(root,parent.toString()).children.add(new Tree(groupTxtField.getText(),userGroup));
+				if(root.accept(findUserC,tempGroup).getUserComponent() instanceof userGroup ){
+					root.accept(findUserC,tempGroup).children.add(new Tree(groupTxtField.getText(),userGroup));
 				}else{
 					System.out.println("Error can not add group to a user.");
 					return;
@@ -167,7 +167,7 @@ public class adminCPanel extends JFrame {
 
 				//Update UI
 				child = new DefaultMutableTreeNode(groupTxtField.getText());
-				parent.add(child);
+				selectedElement.add(child);
 				//System.out.println(parent.toString());
 				tree.updateUI();
 
@@ -191,9 +191,9 @@ public class adminCPanel extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				DefaultMutableTreeNode selectedElement 
    				=(DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent();
-				Tree selectedNode = root.findUser(root,selectedElement.toString());
-				userPanel userPanel = new userPanel(selectedNode.getUser(), root);
-				//System.out.println(selectedNode.getUser().getUserName());
+				
+				Tree selectedNode = root.accept(findUserC, new userName(selectedElement.toString()));
+				userPanel userPanel = new userPanel((userName)selectedNode.getUserComponent(), root);
 			}
 		});
 		userView_Panel.add(openUserView_button);

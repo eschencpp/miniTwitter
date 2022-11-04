@@ -80,7 +80,6 @@ public class userName extends userComponent implements Observable, Observer{
         if(o instanceof userName){
             userName u = (userName)o;
             u.following.add(this);
-            System.out.println(u.following.size());
         }
     }
     public void unfollow(Observer o){

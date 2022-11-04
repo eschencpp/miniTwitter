@@ -16,13 +16,20 @@ public class driver {
         userName Steve = new userName("Steve");
         userName Jerry = new userName("Jerry");
 
-        Eric.addfollower(Steve);
-        Bill.addfollower(Steve);
-        Jerry.addfollower(Steve);
 
-        for(int i = 0; i < Steve.getFollowing().size(); i++){
-            userName u = Steve.getFollowing().get(i);
-            System.out.println(u.getUserName());
-        }
+        userGroup rootGroup = new userGroup("root");
+	    Tree root = new Tree("root", rootGroup);
+
+        // root.children.add(new Tree(Eric.getUserName(),Eric));
+        // root.children.add(new Tree(Bill.getUserName(),Bill));
+
+        // findUserCompVisitor findVisitor = new findUserCompVisitor();
+        // if(root.accept(findVisitor, Eric) instanceof userName){
+        //     System.out.println("yessss");
+        // } 
+        // userName b = (userName)root.accept(findVisitor, Eric);
+        // System.out.println(b.getUserName());
+
+        
     }
 }

@@ -8,7 +8,7 @@ public class Tree {
     
     String uid;
     List<Tree> children = new LinkedList<>();
-    userComponent userC;
+    public userComponent userC;
     Tree(String userid, userComponent component){
         uid = userid;
         userC = component;
@@ -69,39 +69,15 @@ public class Tree {
         return c;
     }
 
-    /**
-    * Searches the tree until user is found
-    *
-    * @param root  the starting node to search from
-    * @param id    the key (username) that is being searched for
-    */
-    public Tree findUser(Tree root, String id){
-        if(root == null) return null;
-        Queue<Tree> queue = new LinkedList<>();
-        queue.offer(root);
-        while(!queue.isEmpty()) {
-            int len = queue.size();
-            for(int i=0;i<len;i++) {
-                Tree node = queue.poll();
-                assert node != null;
-                if(node.uid.equals(id)){
-                    return node;
-                }
-                for (Tree item : node.children) {
-                    queue.offer(item);
-                }
-            }
-        }
-        return null;
+    public userComponent getUserComponent(){
+        return userC;
     }
 
-    /**
-    * Return the data object userName
-    */
-    public userName getUser(){
-        if(userC instanceof userName){
-            return (userName)userC;
+    public Tree accept(componentVisitor visitor, userComponent userComp){
+
+        if(userComp instanceof userName){
+            return visitor.visit(this, (userName)(userComp));
         }
-        return null;
+        return visitor.visit(this, (userGroup)(userComp));
     }
 }
