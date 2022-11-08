@@ -17,11 +17,6 @@ public class userGroup extends userComponent{
         return groupName;
     }
 
-    //Add a user or group
-    @Override
-    public void add(userComponent newUserComponent) {
-        userComponents.add(newUserComponent);
-    }
 
     //Remove a user or group
     @Override
@@ -34,19 +29,5 @@ public class userGroup extends userComponent{
     public userComponent getComponent(int componentIndex) {
         return userComponents.get(componentIndex);
     }
-    
-    //Gets all children of node
-    @Override
-    public void displayDetails(){
-        System.out.println(getGroupName());
-
-
-        Iterator userIterator = userComponents.iterator();
-        while(userIterator.hasNext()) {
-            userComponent userInfo = (userComponent) userIterator.next();
-            userInfo.displayDetails();
-        }
-    }
-
     
 }
