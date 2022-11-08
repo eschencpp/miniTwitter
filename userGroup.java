@@ -17,11 +17,6 @@ public class userGroup extends userComponent{
         return groupName;
     }
 
-    //Add a user or group
-    @Override
-    public void add(userComponent newUserComponent) {
-        userComponents.add(newUserComponent);
-    }
 
     //Remove a user or group
     @Override

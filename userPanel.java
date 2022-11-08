@@ -27,17 +27,14 @@ import java.awt.event.ActionEvent;
 
 public class userPanel extends JFrame{
     
-    private JPanel contentPane;
-	private JTextField userTxtField;
-	private JTextField message_box;
-    String week[]= { "Monday","Tuesday","Wednesday",
-                "Thursday","Friday","Saturday","Sunday","Tuesday","Tuesday",};
-                
-    private userName user;
-	private Tree root;
-	private findUserCompVisitor findUserC = new findUserCompVisitor();
-	JList following_JList;
-	JList newsFeed_Jlist;
+    private  JPanel contentPane;
+	private  JTextField userTxtField;
+	private  JTextField message_box;      
+    private  userName user;
+	private  Tree root;
+	private  findUserCompVisitor findUserC = new findUserCompVisitor();
+	private  JList following_JList;
+	private  JList newsFeed_Jlist;
 
     public userPanel(userName u, Tree tree){
         user = u;
@@ -51,7 +48,7 @@ public class userPanel extends JFrame{
 	}
 
     private void makeGui(){
-        this.setTitle("User Panel: " + user.getUserName());
+        setTitle("User Panel: " + user.getUserName());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 600);
 		contentPane = new JPanel();
@@ -71,7 +68,7 @@ public class userPanel extends JFrame{
         setVisible(true);
     }
 
-    private void followUser(){
+    private  void followUser(){
         JPanel follow_panel = new JPanel();
 		contentPane.add(follow_panel);
 		follow_panel.setLayout(new BoxLayout(follow_panel, BoxLayout.X_AXIS));
@@ -91,9 +88,13 @@ public class userPanel extends JFrame{
 		JButton followButton = new JButton("Follow User");
 		followButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				userName u = (userName)root.accept(findUserC, new userName(userTxtField.getText())).getUserComponent(); //The observable 
-				if(u != null){
-					u.addfollower(getUser());
+				userName u = new userName(null);
+				try {
+					u = (userName)root.accept(findUserC, new userName(userTxtField.getText())).getUserComponent();
+					u.attach(getUser().getNewsFeed());
+					user.follow(u);
+				} catch (Exception userNotFoundException) {
+					System.out.println("User does not exist");
 				}
 				//Set the following list data and update the UI 
 				following_JList.setListData(getUser().getFollowingNames());
@@ -104,7 +105,7 @@ public class userPanel extends JFrame{
 		followBtn_panel.add(followButton);
     }
 
-    private void followerList(){
+    private  void followerList(){
         JPanel follower_panel;
 		follower_panel = new JPanel();
 		contentPane.add(follower_panel);
@@ -134,7 +135,7 @@ public class userPanel extends JFrame{
 		following_JList.setListData(getUser().getFollowingNames());
     }
 
-    private void tweetPanel(){
+    private  void tweetPanel(){
         JPanel tweet_panel = new JPanel();
 		contentPane.add(tweet_panel);
 		tweet_panel.setLayout(new BoxLayout(tweet_panel, BoxLayout.X_AXIS));
@@ -156,7 +157,7 @@ public class userPanel extends JFrame{
 		tweetBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				getUser().tweet(message_box.getText());
-				newsFeed_Jlist.setListData(getUser().getNewsFeed().toArray());
+				newsFeed_Jlist.setListData(getUser().getNewsFeed().getMessages().toArray());
 				newsFeed_Jlist.updateUI();
 			}
 		});
@@ -187,6 +188,6 @@ public class userPanel extends JFrame{
 		newsFeed_Jlist = new JList();
 		scrollPane_1.setViewportView(newsFeed_Jlist);
 		newsFeed_Jlist.setFont(new Font("Arial", Font.PLAIN, 12));
-		newsFeed_Jlist.setListData(getUser().getNewsFeed().toArray());
+		newsFeed_Jlist.setListData(getUser().getNewsFeed().getMessages().toArray());
     }
 }

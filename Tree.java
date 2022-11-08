@@ -8,7 +8,7 @@ public class Tree {
     
     String uid;
     List<Tree> children = new LinkedList<>();
-    public userComponent userC;
+    private userComponent userC;
     Tree(String userid, userComponent component){
         uid = userid;
         userC = component;

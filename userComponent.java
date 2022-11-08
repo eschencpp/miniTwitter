@@ -21,13 +21,6 @@ public abstract class userComponent {
 
     public String getGroupName(){
         throw new UnsupportedOperationException();
-
     }
 
-    public void displayDetails(){
-        throw new UnsupportedOperationException();
-
-    }
-
-    
 }

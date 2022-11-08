@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class userName extends userComponent implements Observable, Observer{
+public class userName extends userComponent implements Observable{
     
     private String UUID;
-    private  ArrayList<Observer> followerList = new ArrayList();
+    private  ArrayList<Observer> observerList = new ArrayList();
     private  ArrayList<userName> following = new ArrayList();
-    private  ArrayList newsFeed = new ArrayList();
+    private newsFeed newsFeed = new newsFeed();
     private  ArrayList<String> messages = new ArrayList<String>();
 
 
     public userName(String username){
         this.UUID = username;
+        this.attach(newsFeed);
     }
     
     //Returns the username
@@ -23,8 +24,8 @@ public class userName extends userComponent implements Observable, Observer{
     }
     
     //Returns the list of followers
-    public ArrayList getFollowerList() {
-        return followerList;
+    public ArrayList getobserverList() {
+        return observerList;
     }
 
     //Returns the list of users that are being followed
@@ -41,17 +42,13 @@ public class userName extends userComponent implements Observable, Observer{
         return s;
     }
 
-    //Returns messages from the user and their following list
-    public ArrayList getNewsFeed() {
+
+    public newsFeed getNewsFeed() {
         return newsFeed;
     }
 
-    public void displayDetails(){
-        System.out.println(this.UUID);
-    }
 
     public void tweet(String tweet){
-        this.newsFeed.add("From "+ this.UUID + ":    " + tweet);
         this.messages.add(tweet);
         notifyFollowers(tweet);
     }
@@ -74,26 +71,22 @@ public class userName extends userComponent implements Observable, Observer{
         return pMsg;
     }
 
+    public void follow(userName user){
+        this.following.add(user);
+    }
 
-    public void addfollower(Observer o){
-        followerList.add(o);
-        if(o instanceof userName){
-            userName u = (userName)o;
-            u.following.add(this);
-        }
+    public void attach(Observer o){
+        observerList.add(o);
     }
-    public void unfollow(Observer o){
-        followerList.remove(o);
+
+    public void detach(Observer o){
+        observerList.remove(o);
     }
+
     public void notifyFollowers(String tweet){
-        for(Observer follower : followerList){
-            follower.update(tweet);
+        for(Observer follower : observerList){
+            follower.update("From "+ this.UUID + ":    " + tweet);
         }   
     }
-
-    public void update(String tweet){
-        newsFeed.add(tweet);
-    }
-
 
 }
