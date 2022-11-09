@@ -4,39 +4,25 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class Tree {
+public class Tree extends Visitable {
     
-    String uid;
-    List<Tree> children = new LinkedList<>();
+    private String uid;
+    private List<Tree> children = new LinkedList<>();
     private userComponent userC;
     Tree(String userid, userComponent component){
         uid = userid;
         userC = component;
     }
 
-    /**
-    * Prints the tree from starting root
-    *
-    * @param root  the starting node to search from
-    */
-    public void printNAryTree(Tree root){
-        if(root == null) return;
-        Queue<Tree> queue = new LinkedList<>();
-        queue.offer(root);
-        while(!queue.isEmpty()) {
-            int len = queue.size();
-            for(int i=0;i<len;i++) {
-                Tree node = queue.poll();
-                assert node != null;
-                System.out.print(node.uid + " ");
-                for (Tree item : node.children) {
-                    queue.offer(item);
-                }
-            }
-            System.out.println();
-        }
+    //Return user id
+    public String getUID(){
+        return this.uid;
     }
 
+    //Return children of node
+    public List<Tree> getChildren(){
+        return this.children;
+    }
 
     /** 
      * Count the total number of messages sent from all users in index 0 and 
@@ -56,8 +42,9 @@ public class Tree {
                 Tree node = queue.poll();
                 assert node != null;
                 if(node.userC instanceof userName){
-                    msgCount += node.getUser().getTweets().size();
-                    posMsg += node.getUser().getPositive();
+                    userName user = (userName)node.userC;
+                    msgCount += user.getNewsFeed().countMessages();
+                    posMsg += user.getNewsFeed().countPositiveMessages();
                 }
                 for (Tree item : node.children) {
                     queue.offer(item);
@@ -69,12 +56,13 @@ public class Tree {
         return c;
     }
 
+    //Return the user component associated with the node
     public userComponent getUserComponent(){
         return userC;
     }
 
-    public Tree accept(componentVisitor visitor, userComponent userComp){
-
+    //Accept visitors
+    public Tree accept(Visitor visitor, userComponent userComp){
         if(userComp instanceof userName){
             return visitor.visit(this, (userName)(userComp));
         }

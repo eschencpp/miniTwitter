@@ -111,12 +111,11 @@ public class adminCPanel extends JFrame {
 				//Element that cursor selected in JTree
 				DefaultMutableTreeNode selectedElement 
    					=(DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent();
-				userGroup tempGroup = new userGroup(selectedElement.toString()); //Local Group used to compare to Groups in tree
-				//Backend functionality
+				userGroup tempGroup = new userGroup(selectedElement.toString()); //Local Group used to compare to Groups in tree	
 				userName username = new userName(userTxtField.getText());
 				//Add user if selected directory is a group and the user does not exist already
 				if(root.accept(findUserC,tempGroup).getUserComponent() instanceof userGroup && (root.accept(findUserC, username) == null) ){
-					root.accept(findUserC,tempGroup).children.add(new Tree(userTxtField.getText(),username));
+					root.accept(findUserC,tempGroup).getChildren().add(new Tree(userTxtField.getText(),username));
 				}else{
 					if(root.accept(findUserC, username) != null){
 						System.out.println("User already exists. Please choose another username");
@@ -159,7 +158,7 @@ public class adminCPanel extends JFrame {
 				//Backend functionality
 				userGroup userGroup = new userGroup(groupTxtField.getText());
 				if(root.accept(findUserC,tempGroup).getUserComponent() instanceof userGroup ){
-					root.accept(findUserC,tempGroup).children.add(new Tree(groupTxtField.getText(),userGroup));
+					root.accept(findUserC,tempGroup).getChildren().add(new Tree(groupTxtField.getText(),userGroup));
 				}else{
 					System.out.println("Error can not add group to a user.");
 					return;

@@ -17,5 +17,22 @@ public class newsFeed implements Observer {
     public ArrayList<String> getMessages(){
         return messages;
     }
+
+    public int countMessages(){
+        return messages.size();
+    }
+
+    public int countPositiveMessages(){
+        int posMsg = 0;
+        String[] positiveWords = {"good","great","nice"};
+        for(int i = 0; i < messages.size(); i++){
+            for(int k = 0; k < positiveWords.length; k++){
+                if(this.messages.get(i).contains(positiveWords[k])){
+                    posMsg++;
+                }
+            }
+        }
+        return posMsg;
+    }
     
 }
