@@ -1,8 +1,6 @@
 package miniTwitter;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class userName extends userComponent implements Observable{
     
@@ -33,21 +31,21 @@ public class userName extends userComponent implements Observable{
         return following;
     }
 
+    //Get list of names that user is following
     public String[] getFollowingNames(){
-        String[] s = new String[20]; 
+        String[] s = new String[100]; //Max Capacity 100
         for(int i = 0; i < following.size(); i++){
             s[i] = this.following.get(i).getUserName();
         }
-
         return s;
     }
 
-
+    //Return the user's newsfeed
     public newsFeed getNewsFeed() {
         return newsFeed;
     }
 
-
+    //Add tweet to user and notify observers
     public void tweet(String tweet){
         this.messages.add(tweet);
         notifyFollowers(tweet);
@@ -58,23 +56,12 @@ public class userName extends userComponent implements Observable{
         return this.messages;
     }
 
-    public int getPositive(){
-        int pMsg = 0;
-        String[] positiveWords = {"good","great","nice"};
-        for(int i = 0; i < this.messages.size(); i++){
-            for(int k = 0; k < positiveWords.length; k++){
-                if(this.messages.get(i).contains(positiveWords[k])){
-                    pMsg++;
-                }
-            }
-        }
-        return pMsg;
-    }
-
+    //Add other userNames to following list
     public void follow(userName user){
         this.following.add(user);
     }
 
+    //Add observers
     public void attach(Observer o){
         observerList.add(o);
     }
@@ -83,10 +70,10 @@ public class userName extends userComponent implements Observable{
         observerList.remove(o);
     }
 
+    //Update followers when tweet posted
     public void notifyFollowers(String tweet){
         for(Observer follower : observerList){
             follower.update("From "+ this.UUID + ":    " + tweet);
         }   
     }
-
 }

@@ -36,6 +36,10 @@ public class userPanel extends JFrame{
 	private  JList following_JList;
 	private  JList newsFeed_Jlist;
 
+	/**
+	* @param  u  the userName object of the user panel
+	* @param  Tree the root node of the tree (root userGroup)
+	*/
     public userPanel(userName u, Tree tree){
         user = u;
 		root = tree;
@@ -47,27 +51,24 @@ public class userPanel extends JFrame{
 		return user;
 	}
 
+	//Call methods to setup the UI
     private void makeGui(){
         setTitle("User Panel: " + user.getUserName());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		
 		followUser();
-		
-		followerList();
-		
+		followingList();
 		tweetPanel();
-		
 		newsFeed();
-
         setVisible(true);
     }
 
+	//Create UI to allow for users to be followed
     private  void followUser(){
         JPanel follow_panel = new JPanel();
 		contentPane.add(follow_panel);
@@ -105,7 +106,8 @@ public class userPanel extends JFrame{
 		followBtn_panel.add(followButton);
     }
 
-    private  void followerList(){
+	//Create UI to show the following list of the user
+    private void followingList(){
         JPanel follower_panel;
 		follower_panel = new JPanel();
 		contentPane.add(follower_panel);
@@ -135,6 +137,7 @@ public class userPanel extends JFrame{
 		following_JList.setListData(getUser().getFollowingNames());
     }
 
+	//Allow the user to make tweets
     private  void tweetPanel(){
         JPanel tweet_panel = new JPanel();
 		contentPane.add(tweet_panel);
@@ -155,15 +158,22 @@ public class userPanel extends JFrame{
 		JButton tweetBtn = new JButton("Tweet");
 		tweetBtn.setPreferredSize(new Dimension(100, 20));
 		tweetBtn.addActionListener(new ActionListener() {
+			//Reverse the news feed to show recent messages on top and older ones on bottom
 			public void actionPerformed(ActionEvent e) {
 				getUser().tweet(message_box.getText());
-				newsFeed_Jlist.setListData(getUser().getNewsFeed().getMessages().toArray());
+				ArrayList<String> userNewsFeed = getUser().getNewsFeed().getMessages();
+				ArrayList<String> revArrayList = new ArrayList<String>();
+				for (int i = userNewsFeed.size() - 1; i >= 0; i--) {
+					revArrayList.add(userNewsFeed.get(i));
+        		}
+				newsFeed_Jlist.setListData(revArrayList.toArray());
 				newsFeed_Jlist.updateUI();
 			}
 		});
 		tweetBtn_panel.add(tweetBtn);
     }
 
+	//Set the UI to showcase the newsfeed of the user
     private void newsFeed(){
         JPanel newsFeed_panel = new JPanel();
 		contentPane.add(newsFeed_panel);
@@ -188,6 +198,12 @@ public class userPanel extends JFrame{
 		newsFeed_Jlist = new JList();
 		scrollPane_1.setViewportView(newsFeed_Jlist);
 		newsFeed_Jlist.setFont(new Font("Arial", Font.PLAIN, 12));
-		newsFeed_Jlist.setListData(getUser().getNewsFeed().getMessages().toArray());
+		//Reverse the newsFeed so that most recent messages are shown on top
+		ArrayList<String> userNewsFeed = getUser().getNewsFeed().getMessages();
+		ArrayList<String> revArrayList = new ArrayList<String>();
+				for (int i = userNewsFeed.size() - 1; i >= 0; i--) {
+					revArrayList.add(userNewsFeed.get(i));
+        		}
+		newsFeed_Jlist.setListData(revArrayList.toArray());
     }
 }
