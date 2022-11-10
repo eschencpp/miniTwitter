@@ -4,7 +4,7 @@ import java.util.List;
 
 public class userName extends userComponent implements Observable{
     
-    private String UUID;
+    private String UID;
     private  ArrayList<Observer> observerList = new ArrayList();
     private  ArrayList<userName> following = new ArrayList();
     private newsFeed newsFeed = new newsFeed();
@@ -12,17 +12,17 @@ public class userName extends userComponent implements Observable{
 
 
     public userName(String username){
-        this.UUID = username;
+        this.UID = username;
         this.attach(newsFeed);
     }
     
     //Returns the username
-    public String getUserName(){
-        return UUID;
+    public String getUID(){
+        return UID;
     }
     
     //Returns the list of followers
-    public ArrayList getobserverList() {
+    public ArrayList getObserverList() {
         return observerList;
     }
 
@@ -35,7 +35,7 @@ public class userName extends userComponent implements Observable{
     public String[] getFollowingNames(){
         String[] s = new String[100]; //Max Capacity 100
         for(int i = 0; i < following.size(); i++){
-            s[i] = this.following.get(i).getUserName();
+            s[i] = this.following.get(i).getUID();
         }
         return s;
     }
@@ -73,7 +73,7 @@ public class userName extends userComponent implements Observable{
     //Update followers when tweet posted
     public void notifyFollowers(String tweet){
         for(Observer follower : observerList){
-            follower.update("From "+ this.UUID + ":    " + tweet);
+            follower.update("From "+ this.UID + ":    " + tweet);
         }   
     }
 }

@@ -1,12 +1,10 @@
 package miniTwitter;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.FlowLayout;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JTextField;
@@ -53,7 +51,7 @@ public class userPanel extends JFrame{
 
 	//Call methods to setup the UI
     private void makeGui(){
-        setTitle("User Panel: " + user.getUserName());
+        setTitle("User Panel: " + user.getUID());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 600);
 		contentPane = new JPanel();
@@ -102,7 +100,7 @@ public class userPanel extends JFrame{
 				following_JList.updateUI();
 			}
 		});
-		followButton.setPreferredSize(new Dimension(100, 20));
+		followButton.setPreferredSize(new Dimension(125, 20));
 		followBtn_panel.add(followButton);
     }
 

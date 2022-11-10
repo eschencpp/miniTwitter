@@ -63,9 +63,6 @@ public class Tree extends Visitable {
 
     //Accept visitors
     public Tree accept(Visitor visitor, userComponent userComp){
-        if(userComp instanceof userName){
-            return visitor.visit(this, (userName)(userComp));
-        }
-        return visitor.visit(this, (userGroup)(userComp));
+        return visitor.visit(this, userComp);
     }
 }

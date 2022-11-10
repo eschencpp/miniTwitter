@@ -3,14 +3,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class findUserCompVisitor extends Visitor{
-
     /** 
-     * Search the tree starting from the root node until a specified user is found
+     * Search the tree starting from the root node until a specified user component is found
      * @param root node to start traversal
-     * @param userName the user that we are searching for
+     * @param userC the user component we are looking for
      * @return if user is found return the node, if not then return null
     */
-    public Tree visit(Tree root,userName userName){
+    public Tree visit(Tree root,userComponent userC){
         if(root == null) return null;
         Queue<Tree> queue = new LinkedList<>();
         queue.offer(root);
@@ -19,7 +18,7 @@ public class findUserCompVisitor extends Visitor{
             for(int i=0;i<len;i++) {
                 Tree node = queue.poll();
                 assert node != null;
-                if(node.getUID().equals(userName.getUserName())){
+                if(node.getUID().equals(userC.getUID()) && node.getUserComponent().getClass().equals(userC.getClass())){
                     return node;
                 }
                 for (Tree item : node.getChildren()) {
@@ -29,31 +28,4 @@ public class findUserCompVisitor extends Visitor{
         }
         return null;
     }
-
-    /** 
-     * Search the tree starting from the root node until a specified group is found
-     * @param root node to start traversal
-     * @param userGroup the group name we are searching for
-     * @return if group is found return the group, if not then return null
-    */
-    public Tree visit(Tree root,userGroup userGroup){
-        if(root == null) return null;
-        Queue<Tree> queue = new LinkedList<>();
-        queue.offer(root);
-        while(!queue.isEmpty()) {
-            int len = queue.size();
-            for(int i=0;i<len;i++) {
-                Tree node = queue.poll();
-                assert node != null;
-                if(node.getUID().equals(userGroup.getGroupName())){
-                    return node;
-                }
-                for (Tree item : node.getChildren()) {
-                    queue.offer(item);
-                }
-            }
-        }
-        return null;
-    }
-    
 }
