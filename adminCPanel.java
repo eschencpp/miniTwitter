@@ -17,9 +17,7 @@ import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-/**
- * adminCPanel
- */
+
 public class adminCPanel extends JFrame {
 
     private static adminCPanel acp = null;
@@ -109,7 +107,7 @@ public class adminCPanel extends JFrame {
 				DefaultMutableTreeNode selectedElement 
    					=(DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent();
 				userGroup tempGroup = new userGroup(selectedElement.toString()); //Local Group used to compare to Groups in tree	
-				userName username = new userName(userTxtField.getText());
+				userName username = new userName(userTxtField.getText()); //Create user object using the text field as the UID
 				Tree selectedGroup = root.accept(findUserC,tempGroup);
 				//Add user if selected directory is a group and the user does not exist already
 				if(selectedGroup != null && selectedGroup.getUserComponent() instanceof userGroup){
@@ -149,7 +147,7 @@ public class adminCPanel extends JFrame {
 				DefaultMutableTreeNode selectedElement 
    					=(DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent();
 				userGroup tempGroup = new userGroup(selectedElement.toString()); //Local Group used to compare to Groups in tree
-				userGroup userGroup = new userGroup(groupTxtField.getText()); //Group that is being added
+				userGroup userGroup = new userGroup(groupTxtField.getText()); //Create userGroup object using the text field as the UID
 				Tree selectedGroup = root.accept(findUserC,tempGroup);
 				if(selectedGroup != null && selectedGroup.getUserComponent() instanceof userGroup ){
 					if(root.accept(findUserC,userGroup) != null){
@@ -283,7 +281,6 @@ public class adminCPanel extends JFrame {
 		
 		JPanel posPercLbl_panel = new JPanel();
 		message_Panel.add(posPercLbl_panel);
-		
 	
 		posPercLbl_panel.add(posPerc_label);
 	}

@@ -1,9 +1,10 @@
 package miniTwitter;
 import java.util.ArrayList;
 
-public class newsFeed implements Observer {
+public class newsFeed implements Observer, Observable {
 
     private  ArrayList<String> messages;
+    private ArrayList<Observer> observerList = new ArrayList<>();
 
     public newsFeed(){
         this.messages = new ArrayList<String>();
@@ -13,6 +14,7 @@ public class newsFeed implements Observer {
     @Override
     public void update(String tweet){
         messages.add(tweet);
+        notifyFollowers("");
     }
 
     //Return the messages in user's newsfeed
@@ -45,4 +47,20 @@ public class newsFeed implements Observer {
         return posMsg;
     }
     
+    @Override
+    public void attach(Observer o) {
+        observerList.add(o);
+    }
+
+    @Override
+    public void detach(Observer o) {
+        observerList.remove(o);
+        
+    }
+
+    public void notifyFollowers(String tweet) {
+        for(Observer follower : observerList){
+            follower.update(tweet);
+        }  
+    }
 }

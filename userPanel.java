@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.event.ActionEvent;
 
-public class userPanel extends JFrame{
+public class userPanel extends JFrame implements Observer{
     
     private  JPanel contentPane;
 	private  JTextField userTxtField;
@@ -159,13 +159,8 @@ public class userPanel extends JFrame{
 			//Reverse the news feed to show recent messages on top and older ones on bottom
 			public void actionPerformed(ActionEvent e) {
 				getUser().tweet(message_box.getText());
-				ArrayList<String> userNewsFeed = getUser().getNewsFeed().getMessages();
-				ArrayList<String> revArrayList = new ArrayList<String>();
-				for (int i = userNewsFeed.size() - 1; i >= 0; i--) {
-					revArrayList.add(userNewsFeed.get(i));
-        		}
-				newsFeed_Jlist.setListData(revArrayList.toArray());
-				newsFeed_Jlist.updateUI();
+				//Update tweet box UI with updates list of tweets
+				update("");
 			}
 		});
 		tweetBtn_panel.add(tweetBtn);
@@ -198,10 +193,24 @@ public class userPanel extends JFrame{
 		newsFeed_Jlist.setFont(new Font("Arial", Font.PLAIN, 12));
 		//Reverse the newsFeed so that most recent messages are shown on top
 		ArrayList<String> userNewsFeed = getUser().getNewsFeed().getMessages();
+		getUser().getNewsFeed().attach(this);
 		ArrayList<String> revArrayList = new ArrayList<String>();
 				for (int i = userNewsFeed.size() - 1; i >= 0; i--) {
 					revArrayList.add(userNewsFeed.get(i));
         		}
 		newsFeed_Jlist.setListData(revArrayList.toArray());
     }
+
+
+	//Update the user UI tweets when changes are made in news feed
+	@Override
+	public void update(String tweet) {
+		ArrayList<String> userNewsFeed = getUser().getNewsFeed().getMessages();
+		ArrayList<String> revArrayList = new ArrayList<String>();
+		for (int i = userNewsFeed.size() - 1; i >= 0; i--) {
+			revArrayList.add(userNewsFeed.get(i));
+        }
+		newsFeed_Jlist.setListData(revArrayList.toArray());
+		newsFeed_Jlist.updateUI();
+	}
 }

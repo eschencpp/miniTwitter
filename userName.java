@@ -9,6 +9,7 @@ public class userName extends userComponent implements Observable{
     private  ArrayList<userName> following = new ArrayList();
     private newsFeed newsFeed = new newsFeed();
     private  ArrayList<String> messages = new ArrayList<String>();
+    private ArrayList<userName> followerList = new ArrayList();
 
 
     public userName(String username){
@@ -33,9 +34,17 @@ public class userName extends userComponent implements Observable{
 
     //Get list of names that user is following
     public String[] getFollowingNames(){
-        String[] s = new String[100]; //Max Capacity 100
+        String[] s = new String[500]; //Max Capacity 500
         for(int i = 0; i < following.size(); i++){
             s[i] = this.following.get(i).getUID();
+        }
+        return s;
+    }
+
+    public String[] getFollowerList(){
+        String[] s = new String[500]; //Max Capacity 500
+        for(int i = 0; i < followerList.size(); i++){
+            s[i] = this.followerList.get(i).getUID();
         }
         return s;
     }
@@ -59,6 +68,7 @@ public class userName extends userComponent implements Observable{
     //Add other userNames to following list
     public void follow(userName user){
         this.following.add(user);
+        user.followerList.add(this);
     }
 
     //Add observers
@@ -73,7 +83,7 @@ public class userName extends userComponent implements Observable{
     //Update followers when tweet posted
     public void notifyFollowers(String tweet){
         for(Observer follower : observerList){
-            follower.update("From "+ this.UID + ":    " + tweet);
+            follower.update((String)"From "+ this.UID + ":    " + tweet);
         }   
     }
 }
