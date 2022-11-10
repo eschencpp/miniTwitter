@@ -4,9 +4,9 @@ import java.util.Queue;
 
 public class findUserCompVisitor extends Visitor{
     /** 
-     * Search the tree starting from the root node until a specified user is found
+     * Search the tree starting from the root node until a specified user component is found
      * @param root node to start traversal
-     * @param userName the user that we are searching for
+     * @param userC the user component we are looking for
      * @return if user is found return the node, if not then return null
     */
     public Tree visit(Tree root,userComponent userC){

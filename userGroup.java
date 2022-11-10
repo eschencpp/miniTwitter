@@ -1,22 +1,19 @@
 package miniTwitter;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class userGroup extends userComponent{
 
-    private String groupName;
+    private String UID;
     private  ArrayList<userComponent> userComponents = new ArrayList();
 
     public userGroup(String newGroupName){
-        groupName = newGroupName;
+        UID = newGroupName;
     }
 
-    //Get group name
     @Override
-    public String getGroupName() {
-        return groupName;
+    public String getUID(){
+        return UID;
     }
-
 
     //Remove a user or group
     @Override
