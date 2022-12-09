@@ -19,9 +19,12 @@ import java.awt.Font;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.event.ActionEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date; 
 
 public class userPanel extends JFrame implements Observer{
     
@@ -59,6 +62,7 @@ public class userPanel extends JFrame implements Observer{
 		setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		
+		timePanel();
 		followUser();
 		followingList();
 		tweetPanel();
@@ -71,7 +75,7 @@ public class userPanel extends JFrame implements Observer{
         JPanel follow_panel = new JPanel();
 		contentPane.add(follow_panel);
 		follow_panel.setLayout(new BoxLayout(follow_panel, BoxLayout.X_AXIS));
-		follow_panel.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));
+		follow_panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		
 		JPanel userTxt_panel = new JPanel();
 		follow_panel.add(userTxt_panel);
@@ -201,6 +205,31 @@ public class userPanel extends JFrame implements Observer{
 		newsFeed_Jlist.setListData(revArrayList.toArray());
     }
 
+	//Assignment 3
+	private void timePanel(){
+		JPanel updatePanel = new JPanel();
+		contentPane.add(updatePanel);
+		updatePanel.setLayout(new GridLayout(1, 0, 0, 0));
+		//Set time created
+		JPanel timeCreated_panel = new JPanel();
+		updatePanel.add(timeCreated_panel);
+		
+		JLabel timeCreated_label = new JLabel("");
+		timeCreated_panel.add(timeCreated_label);
+		//Convert time to readable format
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy HH:mm:ss");    
+		Date resultdate = new Date(user.getCreationTime());
+		timeCreated_label.setText(sdf.format(resultdate));
+		
+		//Set most recent update time
+		JPanel lastUpdate_panel = new JPanel();
+		updatePanel.add(lastUpdate_panel);
+		
+		JLabel lastUpdate_label = new JLabel("");
+		Date updateTime = new Date(user.getLastUpdateTime());
+		lastUpdate_label.setText(sdf.format(updateTime));
+		lastUpdate_panel.add(lastUpdate_label);
+	}
 
 	//Update the user UI tweets when changes are made in news feed
 	@Override

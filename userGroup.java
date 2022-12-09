@@ -8,6 +8,7 @@ public class userGroup extends userComponent{
 
     public userGroup(String newGroupName){
         UID = newGroupName;
+        this.setCreationTime(System.currentTimeMillis());
     }
 
     @Override

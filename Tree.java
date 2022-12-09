@@ -65,4 +65,12 @@ public class Tree extends Visitable {
     public Tree accept(Visitor visitor, userComponent userComp){
         return visitor.visit(this, userComp);
     }
+
+    public boolean accept(validationVisitor visitor){
+        return visitor.visit(this);
+    }
+
+    public String accept(lastUpdateUserVisitor visitor){
+        return visitor.visit(this);
+    }
 }
