@@ -27,6 +27,8 @@ public class adminCPanel extends JFrame {
 	private int userTotal = 0;
 	private JPanel panel;
 	private findUserCompVisitor findUserC = new findUserCompVisitor();
+	private validationVisitor valVis = new validationVisitor();
+	private lastUpdateUserVisitor lastUpdate = new lastUpdateUserVisitor();
 	private userGroup rootGroup = new userGroup("root");
 	private Tree root = new Tree("root", rootGroup);
 	
@@ -177,7 +179,7 @@ public class adminCPanel extends JFrame {
 		userView_Panel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
 		
 		JButton openUserView_button = new JButton("Open User View");
-		openUserView_button.setPreferredSize(new Dimension(300, 25));
+		openUserView_button.setPreferredSize(new Dimension(150, 25));
 		openUserView_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultMutableTreeNode selectedElement 
@@ -188,6 +190,30 @@ public class adminCPanel extends JFrame {
 			}
 		});
 		userView_Panel.add(openUserView_button);
+
+		//Assignment 3 last updated user button
+		JButton lastUpdate_button = new JButton("Last Update User");
+		lastUpdate_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("The last updated user is: "+root.accept(lastUpdate));
+			}
+		});
+		userView_Panel.add(lastUpdate_button);
+
+		//Assignment 3 Validate users button
+		JButton validateButton = new JButton("Validate Names");
+		validateButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean isValid = root.accept(valVis);
+				if(isValid == true){
+					System.out.println("Usernames are valid.");
+				}else{
+					System.out.println("Usernames are not valid.");
+				}
+			}
+		});
+		userView_Panel.add(validateButton);
+		validateButton.setPreferredSize(new Dimension(150, 25));
 	}
 
 	//Display total amout of users/groups

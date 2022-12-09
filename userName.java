@@ -10,11 +10,13 @@ public class userName extends userComponent implements Observable{
     private newsFeed newsFeed = new newsFeed();
     private  ArrayList<String> messages = new ArrayList<String>();
     private ArrayList<userName> followerList = new ArrayList();
-
+    private long lastUpdateTime;
 
     public userName(String username){
         this.UID = username;
         this.attach(newsFeed);
+        this.setCreationTime(System.currentTimeMillis());
+        this.lastUpdateTime = this.getCreationTime();
     }
     
     //Returns the username
@@ -30,6 +32,14 @@ public class userName extends userComponent implements Observable{
     //Returns the list of users that are being followed
     public ArrayList<userName> getFollowing() {
         return following;
+    }
+
+    public long getLastUpdateTime(){
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(long time){
+        this.lastUpdateTime = time;
     }
 
     //Get list of names that user is following
@@ -58,6 +68,8 @@ public class userName extends userComponent implements Observable{
     public void tweet(String tweet){
         this.messages.add(tweet);
         notifyFollowers(tweet);
+        setLastUpdateTime(this.newsFeed.getLastUpdateTime());
+        updateTime();
     }
 
     //Returns the tweets that the user has made
@@ -80,6 +92,13 @@ public class userName extends userComponent implements Observable{
         observerList.remove(o);
     }
 
+    //Update all followers time
+    public void updateTime(){
+        for(int i = 0; i < followerList.size(); i++){
+            long lastUpTime = followerList.get(i).getNewsFeed().getLastUpdateTime();
+            followerList.get(i).setLastUpdateTime(lastUpTime);
+        }
+    }
     //Update followers when tweet posted
     public void notifyFollowers(String tweet){
         for(Observer follower : observerList){
